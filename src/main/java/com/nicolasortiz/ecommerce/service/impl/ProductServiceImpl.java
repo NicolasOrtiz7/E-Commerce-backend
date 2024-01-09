@@ -28,17 +28,15 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Product update(int id, Product product) {
-        Product productFound = findById(id)
-                .orElseThrow(()-> new MyNotFoundException("Producto no encontrado"));
+        Optional<Product> productFound = findById(id);
         product.setProductId(id);
         return productRepository.save(product);
     }
 
     @Override
     public Product deleteById(int id) {
-        Product productFound = findById(id)
-                .orElseThrow(()-> new MyNotFoundException("Producto no encontrado"));
+        Optional<Product> productFound = findById(id);
         productRepository.deleteById(id);
-        return productFound;
+        return productFound.get();
     }
 }
