@@ -5,6 +5,7 @@ import com.nicolasortiz.ecommerce.model.entity.Product;
 import com.nicolasortiz.ecommerce.model.entity.ProductCategory;
 import com.nicolasortiz.ecommerce.service.ICategoryService;
 import com.nicolasortiz.ecommerce.service.IProductService;
+import com.nicolasortiz.ecommerce.service.IStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class ProductController {
 
     private final IProductService productService;
     private final ICategoryService categoryService;
+    private final IStockService stockService;
 
     // ------------ Products ------------
 
@@ -137,5 +139,33 @@ public class ProductController {
     }
 
     // ------------ Stock ------------
+
+    @GetMapping("/stock")
+    public ResponseEntity<ResponseDto> findAllStock(Pageable pageable){
+        return ResponseEntity.ok()
+                .body(ResponseDto.builder()
+                        .message("Stock de productos encontrados")
+                        .response(stockService.findAll(pageable))
+                        .build());
+    }
+
+    @GetMapping("/stock/{productId}")
+    public ResponseEntity<ResponseDto> findStockByProductId(@PathVariable int productId){
+        return ResponseEntity.ok()
+                .body(ResponseDto.builder()
+                        .message("Stock de producto encontrado")
+                        .response(stockService.findByProductId(productId))
+                        .build());
+    }
+
+    @PutMapping("/stock/product/{productId}/{quantity}")
+    public ResponseEntity<ResponseDto> updateStock(@PathVariable int productId,
+                                                   @PathVariable int quantity){
+        return ResponseEntity.ok()
+                .body(ResponseDto.builder()
+                        .message("Stock de producto encontrado")
+                        .response(stockService.update(productId, quantity))
+                        .build());
+    }
 
 }
