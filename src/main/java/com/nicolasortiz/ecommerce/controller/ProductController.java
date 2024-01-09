@@ -6,6 +6,7 @@ import com.nicolasortiz.ecommerce.model.entity.ProductCategory;
 import com.nicolasortiz.ecommerce.service.ICategoryService;
 import com.nicolasortiz.ecommerce.service.IProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,17 @@ public class ProductController {
 
     // ------------ Products ------------
 
-    // Falta find all con pagination
+    // Buscar todos con paginación
+    @GetMapping
+    public ResponseEntity<ResponseDto> findAll(Pageable pageable){
+        return ResponseEntity.ok()
+                .body(ResponseDto.builder()
+                        .message("Productos encontrados")
+                        .response(productService.findAll(pageable))
+                        .build());
+    }
 
+    // Buscar producto por su ID
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> findProductById(@PathVariable int id){
         return ResponseEntity.ok()
@@ -30,7 +40,20 @@ public class ProductController {
                         .response(productService.findById(id))
                         .build());
     }
-    
+
+    // Buscar productos por nombre de categoría y con paginación (param. categoryName required)
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDto> findProductsByCategoryName(
+            @RequestParam("category") String category,
+            Pageable pageable){
+        return ResponseEntity.ok()
+                .body(ResponseDto.builder()
+                        .message("Productos encontrados")
+                        .response(productService.findByCategoryName(pageable, category))
+                        .build());
+    }
+
+    // Guardar un producto
     @PostMapping
     public ResponseEntity<ResponseDto> saveProduct(@RequestBody Product product){
         return ResponseEntity.ok()
@@ -40,6 +63,7 @@ public class ProductController {
                         .build());
     }
 
+    // Actualizar un producto
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto> updateProduct(@PathVariable int id, @RequestBody Product product){
         return ResponseEntity.ok()
@@ -49,6 +73,7 @@ public class ProductController {
                         .build());
     }
 
+    // Eliminar un producto por su ID
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDto> deleteProductById(@PathVariable int id){
         return ResponseEntity.ok()
@@ -60,6 +85,7 @@ public class ProductController {
 
     // ------------ Categories ------------
 
+    // Buscar todas las categorías
     @GetMapping("/categories")
     public ResponseEntity<ResponseDto> findAllCategories(){
         return ResponseEntity.ok()
@@ -69,6 +95,7 @@ public class ProductController {
                         .build());
     }
 
+    // Buscar categoría por su ID
     @GetMapping("/categories/{id}")
     public ResponseEntity<ResponseDto> findCategoryById(@PathVariable int id){
         return ResponseEntity.ok()
@@ -78,6 +105,7 @@ public class ProductController {
                         .build());
     }
 
+    // Guardar una categoría
     @PostMapping("/categories")
     public ResponseEntity<ResponseDto> saveCategory(@RequestBody ProductCategory category){
         return ResponseEntity.ok()
@@ -87,6 +115,7 @@ public class ProductController {
                         .build());
     }
 
+    // Actualizar una categoría
     @PutMapping("/categories/{id}")
     public ResponseEntity<ResponseDto> updateCategory(@PathVariable int id,
                                                       @RequestBody ProductCategory category){
@@ -97,6 +126,7 @@ public class ProductController {
                         .build());
     }
 
+    // Eliminar una categoría
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<ResponseDto> deleteCategoryById(@PathVariable int id){
         return ResponseEntity.ok()
