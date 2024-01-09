@@ -140,6 +140,7 @@ public class ProductController {
 
     // ------------ Stock ------------
 
+    // Buscar el stock de todos los productos
     @GetMapping("/stock")
     public ResponseEntity<ResponseDto> findAllStock(Pageable pageable){
         return ResponseEntity.ok()
@@ -149,6 +150,7 @@ public class ProductController {
                         .build());
     }
 
+    // Buscar el stock de un producto por su productId
     @GetMapping("/stock/{productId}")
     public ResponseEntity<ResponseDto> findStockByProductId(@PathVariable int productId){
         return ResponseEntity.ok()
@@ -158,6 +160,7 @@ public class ProductController {
                         .build());
     }
 
+    // Actualizar stock de un producto
     @PutMapping("/stock/product/{productId}/{quantity}")
     public ResponseEntity<ResponseDto> updateStock(@PathVariable int productId,
                                                    @PathVariable int quantity){
