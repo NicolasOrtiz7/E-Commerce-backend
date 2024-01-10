@@ -1,6 +1,5 @@
 package com.nicolasortiz.ecommerce.controller;
 
-//import com.nicolasortiz.ecommerce.model.dto.ResponseDto;
 import com.nicolasortiz.ecommerce.model.entity.Product;
 import com.nicolasortiz.ecommerce.model.entity.ProductCategory;
 import com.nicolasortiz.ecommerce.model.entity.ProductStock;
@@ -98,7 +97,7 @@ public class ProductController {
     public ResponseEntity<Void> saveCategory(@RequestBody ProductCategory category){
 
         categoryService.save(category);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // Actualizar una categoría

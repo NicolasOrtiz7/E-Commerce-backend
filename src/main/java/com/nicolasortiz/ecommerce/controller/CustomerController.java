@@ -1,16 +1,19 @@
 package com.nicolasortiz.ecommerce.controller;
 
 import com.nicolasortiz.ecommerce.model.dto.CustomerDto;
-import com.nicolasortiz.ecommerce.model.dto.ResponseDto;
+import com.nicolasortiz.ecommerce.model.dto.FavoriteDto;
 import com.nicolasortiz.ecommerce.model.entity.Customer;
-import com.nicolasortiz.ecommerce.model.entity.Product;
 import com.nicolasortiz.ecommerce.service.ICustomerService;
 import com.nicolasortiz.ecommerce.service.IFavoriteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
@@ -20,68 +23,49 @@ public class CustomerController {
     private final ICustomerService customerService;
     private final IFavoriteService favoriteService;
 
+    // ---------------- Customers ----------------
+
     @GetMapping
-    public ResponseEntity<ResponseDto> findAll(
+    public ResponseEntity<Page<CustomerDto>> findAll(
             @PageableDefault(size = 20) Pageable pageable){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Clientes encontrados")
-                        .response(customerService.findAll(pageable))
-                        .build());
+                .body(customerService.findAll(pageable));
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<ResponseDto> findByEmail(@PathVariable String email){
+    public ResponseEntity<CustomerDto> findByEmail(@PathVariable String email){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Cliente encontrado")
-                        .response(customerService.findByEmail(email))
-                        .build());
+                .body(customerService.findByEmail(email));
     }
 
     // Este no se usará. Se usará el de seguridad.
     @PostMapping
-    public ResponseEntity<ResponseDto> save(@RequestBody Customer customer){
+    public ResponseEntity<Void> saveCustomer(@RequestBody Customer customer){
 
         customerService.save(customer);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Cliente encontrado")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // ---------------- Favorites ----------------
 
     @GetMapping("/favorites/{customerId}")
-    public ResponseEntity<ResponseDto> findAllFavorites(@PathVariable int customerId){
+    public ResponseEntity<List<FavoriteDto>> findAllFavorites(@PathVariable int customerId){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Favoritos encontrados")
-                        .response(favoriteService.findFavoritesByCustomerId(customerId))
-                        .build());
+                .body(favoriteService.findFavoritesByCustomerId(customerId));
     }
 
     @PostMapping("/favorites/{customerId}/{productId}")
-    public ResponseEntity<ResponseDto> saveFavorite(@PathVariable int customerId,
+    public ResponseEntity<Void> saveFavorite(@PathVariable int customerId,
                                                     @PathVariable int productId){
         favoriteService.save(productId, customerId);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Producto agregado a favoritos!")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/favorites/{customerId}/{productId}")
-    public ResponseEntity<ResponseDto> deleteFavorite(@PathVariable int customerId,
+    public ResponseEntity<Void> deleteFavorite(@PathVariable int customerId,
                                                       @PathVariable int productId){
         favoriteService.delete(productId, customerId);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Producto eliminado de favoritos!")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
