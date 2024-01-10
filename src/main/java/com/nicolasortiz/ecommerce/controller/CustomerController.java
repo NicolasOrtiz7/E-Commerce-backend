@@ -42,10 +42,12 @@ public class CustomerController {
     // Este no se usará. Se usará el de seguridad.
     @PostMapping
     public ResponseEntity<ResponseDto> save(@RequestBody Customer customer){
+
+        customerService.save(customer);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Cliente encontrado")
-                        .response(customerService.save(customer))
+                        .response("OK")
                         .build());
     }
 

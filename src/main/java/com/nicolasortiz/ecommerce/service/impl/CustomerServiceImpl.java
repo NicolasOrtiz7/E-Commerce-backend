@@ -42,12 +42,12 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public CustomerDto save(Customer customer) {
+    public void save(Customer customer) {
         Optional<Customer> customerFound = customerRepository.findByEmail(customer.getEmail());
 
         if (customerFound.isPresent()){
             throw new MyExistingObjectException("Ese email ya está en uso");
         }
-        return CustomerMapper.INSTANCE.toDto(customerRepository.save(customer));
+        customerRepository.save(customer);
     }
 }

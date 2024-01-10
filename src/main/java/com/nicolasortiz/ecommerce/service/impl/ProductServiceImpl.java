@@ -35,21 +35,20 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product save(Product product) {
-        return productRepository.save(product);
+    public void save(Product product) {
+        productRepository.save(product);
     }
 
     @Override
-    public Product update(int id, Product product) {
+    public void update(int id, Product product) {
         Optional<Product> productFound = findById(id);
         product.setProductId(id);
-        return productRepository.save(product);
+        save(product);
     }
 
     @Override
-    public Product deleteById(int id) {
+    public void deleteById(int id) {
         Optional<Product> productFound = findById(id);
         productRepository.deleteById(id);
-        return productFound.get();
     }
 }

@@ -33,16 +33,16 @@ public class StockServiceImpl implements IStockService {
     }
 
     @Override
-    public ProductStock save(ProductStock stock) {
-        return null; // Se guarda desde el UserServiceImpl
+    public void save(ProductStock stock) {
+         // Se guarda desde el UserServiceImpl
     }
 
     @Override
-    public ProductStock update(int productId, int quantity) {
+    public void update(int productId, int quantity) {
         Optional<ProductStock> stock = findByProductId(productId);
         if (quantity < 0) quantity = 0;
 
         stock.get().setQuantity(quantity);
-        return stockRepository.save(stock.get());
+        stockRepository.save(stock.get());
     }
 }

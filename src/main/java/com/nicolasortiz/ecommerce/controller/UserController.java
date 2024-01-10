@@ -34,19 +34,23 @@ public class UserController {
 
     @PostMapping // Este no se usará. Se usará el de seguridad para crear usuarios.
     public ResponseEntity<ResponseDto> save(@RequestBody User user){
+
+        userService.save(user);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Usuario guardado correctamente")
-                        .response(userService.save(user))
+                        .response("OK")
                         .build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDto> deleteById(@PathVariable int id){
+
+        userService.deleteById(id);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Usuario eliminado correctamente")
-                        .response(userService.deleteById(id))
+                        .response("OK")
                         .build());
     }
 

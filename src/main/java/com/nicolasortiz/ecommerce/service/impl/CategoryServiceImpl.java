@@ -29,31 +29,30 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public ProductCategory save(ProductCategory category) {
+    public void save(ProductCategory category) {
         Optional<ProductCategory> categoryFound =
                 Optional.ofNullable(categoryRepository.findByName(category.getName()));
 
         if (categoryFound.isPresent()){
             throw new MyExistingObjectException("No se puede crear 2 categorías con el mismo nombre");
         }
-        return categoryRepository.save(category);
+        categoryRepository.save(category);
     }
 
     @Override
-    public ProductCategory update(int id, ProductCategory category) {
+    public void update(int id, ProductCategory category) {
         Optional<ProductCategory> categoryFound = findById(id);
         if (categoryFound.isEmpty()){
             throw new MyNotFoundException("No existe la categoría, creala antes de editarla");
         }
 
         category.setCategoryId(id);
-        return save(category);
+        save(category);
     }
 
     @Override
-    public ProductCategory delete(int id) {
+    public void delete(int id) {
         Optional<ProductCategory> category = findById(id);
         categoryRepository.deleteById(id);
-        return category.get();
     }
 }

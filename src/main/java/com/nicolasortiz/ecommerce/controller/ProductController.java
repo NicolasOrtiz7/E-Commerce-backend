@@ -59,30 +59,36 @@ public class ProductController {
     // Guardar un producto
     @PostMapping
     public ResponseEntity<ResponseDto> saveProduct(@RequestBody Product product){
+
+        productService.save(product);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Producto creado correctamente")
-                        .response(productService.save(product))
+                        .response("OK")
                         .build());
     }
 
     // Actualizar un producto
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto> updateProduct(@PathVariable int id, @RequestBody Product product){
+
+        productService.update(id, product);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Producto actualizado correctamente")
-                        .response(productService.update(id, product))
+                        .response("OK")
                         .build());
     }
 
     // Eliminar un producto por su ID
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDto> deleteProductById(@PathVariable int id){
+
+        productService.deleteById(id);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Producto eliminado correctamente")
-                        .response(productService.deleteById(id))
+                        .response("OK")
                         .build());
     }
 
@@ -111,10 +117,12 @@ public class ProductController {
     // Guardar una categoría
     @PostMapping("/categories")
     public ResponseEntity<ResponseDto> saveCategory(@RequestBody ProductCategory category){
+
+        categoryService.save(category);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Categoria guardada correctamente")
-                        .response(categoryService.save(category))
+                        .response("OK")
                         .build());
     }
 
@@ -122,20 +130,23 @@ public class ProductController {
     @PutMapping("/categories/{id}")
     public ResponseEntity<ResponseDto> updateCategory(@PathVariable int id,
                                                       @RequestBody ProductCategory category){
+        categoryService.update(id, category);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Categoria editada correctamente")
-                        .response(categoryService.update(id, category))
+                        .response("OK")
                         .build());
     }
 
     // Eliminar una categoría
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<ResponseDto> deleteCategoryById(@PathVariable int id){
+
+        categoryService.delete(id);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Categoria eliminada correctamente")
-                        .response(categoryService.delete(id))
+                        .response("OK")
                         .build());
     }
 
@@ -165,10 +176,11 @@ public class ProductController {
     @PutMapping("/stock/product/{productId}/{quantity}")
     public ResponseEntity<ResponseDto> updateStock(@PathVariable int productId,
                                                    @PathVariable int quantity){
+        stockService.update(productId, quantity);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Stock de producto encontrado")
-                        .response(stockService.update(productId, quantity))
+                        .response("OK")
                         .build());
     }
 

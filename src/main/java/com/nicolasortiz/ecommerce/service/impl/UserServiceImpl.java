@@ -35,15 +35,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDto save(User user) {
+    public void save(User user) {
         UserDto userFound = findById(user.getUserId());
-        return UserMapper.INSTANCE.toDto(userRepository.save(user));
+        userRepository.save(user);
     }
 
     @Override
-    public UserDto deleteById(int id) {
+    public void deleteById(int id) {
         UserDto userDeleted = findById(id);
         userRepository.deleteById(id);
-        return userDeleted;
     }
 }

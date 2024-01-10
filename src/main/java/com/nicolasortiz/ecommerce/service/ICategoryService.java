@@ -11,10 +11,10 @@ public interface ICategoryService {
 
     Optional<ProductCategory> findById(int id);
 
-    ProductCategory save(ProductCategory category);
+    void save(ProductCategory category);
 
-    ProductCategory update(int id, ProductCategory category);
+    void update(int id, ProductCategory category);
 
-    ProductCategory delete(int id);
+    void delete(int id);
 
 }

@@ -14,6 +14,6 @@ public interface ICustomerService {
 
     CustomerDto findByEmail(String email);
 
-    CustomerDto save(Customer customer);
+    void save(Customer customer);
 
 }

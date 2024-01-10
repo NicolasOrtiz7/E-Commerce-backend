@@ -16,10 +16,10 @@ public interface IProductService {
 
     Page<Product> findByCategoryName(Pageable pageable, String name);
 
-    Product save(Product product);
+    void save(Product product);
 
-    Product update(int id, Product product);
+    void update(int id, Product product);
 
-    Product deleteById(int id);
+    void deleteById(int id);
 
 }

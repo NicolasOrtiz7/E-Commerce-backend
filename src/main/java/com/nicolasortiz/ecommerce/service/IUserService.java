@@ -12,8 +12,8 @@ public interface IUserService {
 
     UserDto findById(int id);
 
-    UserDto save(User user);
+    void save(User user);
 
-    UserDto deleteById(int id);
+    void deleteById(int id);
 
 }

@@ -12,8 +12,8 @@ public interface IStockService {
 
     Optional<ProductStock> findByProductId(int id);
 
-    ProductStock save(ProductStock stock);
+    void save(ProductStock stock);
 
-    ProductStock update(int productId, int quantity);
+    void update(int productId, int quantity);
 
 }
