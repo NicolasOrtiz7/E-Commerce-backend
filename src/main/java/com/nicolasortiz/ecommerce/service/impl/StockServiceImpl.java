@@ -23,13 +23,9 @@ public class StockServiceImpl implements IStockService {
     }
 
     @Override
-    public Optional<ProductStock> findByProductId(int id) {
-        Optional<ProductStock> productStock = Optional.ofNullable(
-                stockRepository.findByProductProductId(id));
-        if (productStock.isEmpty()){
-            throw new MyNotFoundException("No se encontró el producto");
-        }
-        return productStock;
+    public ProductStock findByProductId(int id) {
+        return stockRepository.findByProductProductId(id)
+                .orElseThrow(()-> new MyNotFoundException("No se encontró el producto"));
     }
 
     @Override
@@ -39,10 +35,10 @@ public class StockServiceImpl implements IStockService {
 
     @Override
     public void update(int productId, int quantity) {
-        Optional<ProductStock> stock = findByProductId(productId);
+        ProductStock stock = findByProductId(productId);
         if (quantity < 0) quantity = 0;
 
-        stock.get().setQuantity(quantity);
-        stockRepository.save(stock.get());
+        stock.setQuantity(quantity);
+        stockRepository.save(stock);
     }
 }

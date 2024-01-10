@@ -12,7 +12,7 @@ public interface IProductService {
 
     Page<Product> findAll(Pageable pageable);
 
-    Optional<Product> findById(int id);
+    Product findById(int id);
 
     Page<Product> findByCategoryName(Pageable pageable, String name);
 

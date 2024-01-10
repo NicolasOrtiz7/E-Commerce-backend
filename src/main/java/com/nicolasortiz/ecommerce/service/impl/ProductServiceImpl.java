@@ -24,9 +24,9 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Optional<Product> findById(int id) {
-        return Optional.ofNullable(productRepository.findById(id)
-                .orElseThrow(() -> new MyNotFoundException("Producto no encontrado")));
+    public Product findById(int id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new MyNotFoundException("Producto no encontrado"));
     }
 
     @Override
@@ -41,14 +41,14 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public void update(int id, Product product) {
-        Optional<Product> productFound = findById(id);
+        Product productFound = findById(id);
         product.setProductId(id);
         save(product);
     }
 
     @Override
     public void deleteById(int id) {
-        Optional<Product> productFound = findById(id);
+        Product productFound = findById(id);
         productRepository.deleteById(id);
     }
 }

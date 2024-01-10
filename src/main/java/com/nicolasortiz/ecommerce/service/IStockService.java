@@ -10,7 +10,7 @@ public interface IStockService {
 
     Page<ProductStock> findAll(Pageable pageable);
 
-    Optional<ProductStock> findByProductId(int id);
+    ProductStock findByProductId(int id);
 
     void save(ProductStock stock);
 

@@ -1,8 +1,9 @@
 package com.nicolasortiz.ecommerce.controller;
 
-import com.nicolasortiz.ecommerce.model.dto.ResponseDto;
+//import com.nicolasortiz.ecommerce.model.dto.ResponseDto;
 import com.nicolasortiz.ecommerce.model.entity.Product;
 import com.nicolasortiz.ecommerce.model.entity.ProductCategory;
+import com.nicolasortiz.ecommerce.model.entity.ProductStock;
 import com.nicolasortiz.ecommerce.service.ICategoryService;
 import com.nicolasortiz.ecommerce.service.IProductService;
 import com.nicolasortiz.ecommerce.service.IStockService;
@@ -10,8 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -34,152 +38,107 @@ public class ProductController {
 
     // Buscar producto por su ID
     @GetMapping("/{productId}")
-    public ResponseEntity<ResponseDto> findProductById(@PathVariable int productId){
+    public ResponseEntity<Product> findProductById(@PathVariable int productId){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Producto encontrado")
-                        .response(productService.findById(productId))
-                        .build());
+                .body(productService.findById(productId));
     }
 
     // Buscar productos por nombre de categoría y con paginación (param. categoryName required)
     @GetMapping("/search")
-    public ResponseEntity<ResponseDto> findProductsByCategoryName(
+    public ResponseEntity<Page<Product>> findProductsByCategoryName(
             @RequestParam("category") String category,
             @PageableDefault(size = 15) Pageable pageable){
+
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Productos encontrados")
-                        .response(productService.findByCategoryName(pageable, category))
-                        .build());
+                .body(productService.findByCategoryName(pageable, category));
     }
 
     // Guardar un producto
     @PostMapping
-    public ResponseEntity<ResponseDto> saveProduct(@RequestBody Product product){
+    public ResponseEntity<Void> saveProduct(@RequestBody Product product){
 
         productService.save(product);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Producto creado correctamente")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // Actualizar un producto
     @PutMapping("/{productId}")
-    public ResponseEntity<ResponseDto> updateProduct(@PathVariable int productId,
-                                                     @RequestBody Product product){
+    public ResponseEntity<Void> updateProduct(@PathVariable int productId,
+                                              @RequestBody Product product){
         productService.update(productId, product);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Producto actualizado correctamente")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // Eliminar un producto por su ID
     @DeleteMapping("/{productId}")
-    public ResponseEntity<ResponseDto> deleteProductById(@PathVariable int productId){
+    public ResponseEntity<Void> deleteProductById(@PathVariable int productId){
 
         productService.deleteById(productId);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Producto eliminado correctamente")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // ------------ Categories ------------
 
     // Buscar todas las categorías
     @GetMapping("/categories")
-    public ResponseEntity<ResponseDto> findAllCategories(){
+    public ResponseEntity<List<ProductCategory>> findAllCategories(){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Categorias encontradas")
-                        .response(categoryService.findAll())
-                        .build());
+                .body(categoryService.findAll());
     }
 
     // Buscar categoría por su ID
     @GetMapping("/categories/{categoryId}")
-    public ResponseEntity<ResponseDto> findCategoryById(@PathVariable int categoryId){
+    public ResponseEntity<ProductCategory> findCategoryById(@PathVariable int categoryId){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Categoria encontrada")
-                        .response(categoryService.findById(categoryId))
-                        .build());
+                .body(categoryService.findById(categoryId));
     }
 
     // Guardar una categoría
     @PostMapping("/categories")
-    public ResponseEntity<ResponseDto> saveCategory(@RequestBody ProductCategory category){
+    public ResponseEntity<Void> saveCategory(@RequestBody ProductCategory category){
 
         categoryService.save(category);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Categoria guardada correctamente")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // Actualizar una categoría
     @PutMapping("/categories/{categoryId}")
-    public ResponseEntity<ResponseDto> updateCategory(@PathVariable int categoryId,
+    public ResponseEntity<Void> updateCategory(@PathVariable int categoryId,
                                                       @RequestBody ProductCategory category){
         categoryService.update(categoryId, category);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Categoria editada correctamente")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // Eliminar una categoría
     @DeleteMapping("/categories/{categoryId}")
-    public ResponseEntity<ResponseDto> deleteCategoryById(@PathVariable int categoryId){
+    public ResponseEntity<Void> deleteCategoryById(@PathVariable int categoryId){
 
         categoryService.delete(categoryId);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Categoria eliminada correctamente")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // ------------ Stock ------------
 
     // Buscar el stock de todos los productos
     @GetMapping("/stock")
-    public ResponseEntity<ResponseDto> findAllStock(@PageableDefault(size = 15) Pageable pageable){
+    public ResponseEntity<Page<ProductStock>> findAllStock(@PageableDefault(size = 15) Pageable pageable){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Stock de productos encontrados")
-                        .response(stockService.findAll(pageable))
-                        .build());
+                .body(stockService.findAll(pageable));
     }
 
     // Buscar el stock de un producto por su productId
     @GetMapping("/stock/{productId}")
-    public ResponseEntity<ResponseDto> findStockByProductId(@PathVariable int productId){
+    public ResponseEntity<ProductStock> findStockByProductId(@PathVariable int productId){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Stock de producto encontrado")
-                        .response(stockService.findByProductId(productId))
-                        .build());
+                .body(stockService.findByProductId(productId));
     }
 
     // Actualizar stock de un producto
     @PutMapping("/stock/product/{productId}/{quantity}")
-    public ResponseEntity<ResponseDto> updateStock(@PathVariable int productId,
+    public ResponseEntity<Void> updateStock(@PathVariable int productId,
                                                    @PathVariable int quantity){
         stockService.update(productId, quantity);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Stock de producto encontrado")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

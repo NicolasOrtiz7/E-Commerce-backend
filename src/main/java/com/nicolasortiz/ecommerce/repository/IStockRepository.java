@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface IStockRepository extends JpaRepository<ProductStock, Integer> {
 
     // Buscar stock por ProductId
-    ProductStock findByProductProductId(int id);
+    Optional<ProductStock> findByProductProductId(int id);
 
 }

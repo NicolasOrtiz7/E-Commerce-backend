@@ -23,15 +23,14 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public Optional<ProductCategory> findById(int id) {
-        return Optional.ofNullable(categoryRepository.findById(id)
-                .orElseThrow(() -> new MyNotFoundException("Categoría no encontrada")));
+    public ProductCategory findById(int id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new MyNotFoundException("Categoría no encontrada"));
     }
 
     @Override
     public void save(ProductCategory category) {
-        Optional<ProductCategory> categoryFound =
-                Optional.ofNullable(categoryRepository.findByName(category.getName()));
+        Optional<ProductCategory> categoryFound = categoryRepository.findByName(category.getName());
 
         if (categoryFound.isPresent()){
             throw new MyExistingObjectException("No se puede crear 2 categorías con el mismo nombre");
@@ -41,8 +40,8 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public void update(int id, ProductCategory category) {
-        Optional<ProductCategory> categoryFound = findById(id);
-        if (categoryFound.isEmpty()){
+        ProductCategory categoryFound = findById(id);
+        if (categoryFound == null){
             throw new MyNotFoundException("No existe la categoría, creala antes de editarla");
         }
 
@@ -52,7 +51,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public void delete(int id) {
-        Optional<ProductCategory> category = findById(id);
+        ProductCategory category = findById(id);
         categoryRepository.deleteById(id);
     }
 }

@@ -9,7 +9,7 @@ public interface ICategoryService {
 
     List<ProductCategory> findAll();
 
-    Optional<ProductCategory> findById(int id);
+    ProductCategory findById(int id);
 
     void save(ProductCategory category);
 
