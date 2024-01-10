@@ -23,12 +23,12 @@ public class UserController {
                         .build());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDto> findById(@PathVariable int id){
+    @GetMapping("/{userId}")
+    public ResponseEntity<ResponseDto> findById(@PathVariable int userId){
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Usuario encontrado")
-                        .response(userService.findById(id))
+                        .response(userService.findById(userId))
                         .build());
     }
 
@@ -43,10 +43,10 @@ public class UserController {
                         .build());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDto> deleteById(@PathVariable int id){
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ResponseDto> deleteById(@PathVariable int userId){
 
-        userService.deleteById(id);
+        userService.deleteById(userId);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Usuario eliminado correctamente")

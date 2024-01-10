@@ -28,21 +28,21 @@ public class OrderController {
                         .build());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDto> findByOrderId(@PathVariable int id){
+    @GetMapping("/{orderId}")
+    public ResponseEntity<ResponseDto> findByOrderId(@PathVariable int orderId){
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Orden encontrada")
-                        .response(orderService.findById(id))
+                        .response(orderService.findById(orderId))
                         .build());
     }
 
-    @GetMapping("/customer/{id}")
-    public ResponseEntity<ResponseDto> findByCustomerId(@PathVariable int id){
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<ResponseDto> findByCustomerId(@PathVariable int customerId){
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Ordenes encontradas")
-                        .response(orderService.findByCustomerId(id))
+                        .response(orderService.findByCustomerId(customerId))
                         .build());
     }
 

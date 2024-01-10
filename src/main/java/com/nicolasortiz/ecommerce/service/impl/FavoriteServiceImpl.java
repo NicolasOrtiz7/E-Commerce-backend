@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class IFavoriteServiceImpl implements IFavoriteService {
+public class FavoriteServiceImpl implements IFavoriteService {
 
     private final IFavoriteRepository favoriteRepository;
 

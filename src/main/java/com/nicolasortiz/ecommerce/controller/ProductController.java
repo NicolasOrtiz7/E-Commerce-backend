@@ -7,6 +7,7 @@ import com.nicolasortiz.ecommerce.service.ICategoryService;
 import com.nicolasortiz.ecommerce.service.IProductService;
 import com.nicolasortiz.ecommerce.service.IStockService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -26,21 +27,18 @@ public class ProductController {
 
     // Buscar todos con paginación
     @GetMapping
-    public ResponseEntity<ResponseDto> findAll(@PageableDefault(size = 15) Pageable pageable){
+    public ResponseEntity<Page<Product>> findAll2(@PageableDefault(size = 15) Pageable pageable){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Productos encontrados")
-                        .response(productService.findAll(pageable))
-                        .build());
+                .body(productService.findAll(pageable));
     }
 
     // Buscar producto por su ID
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDto> findProductById(@PathVariable int id){
+    @GetMapping("/{productId}")
+    public ResponseEntity<ResponseDto> findProductById(@PathVariable int productId){
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Producto encontrado")
-                        .response(productService.findById(id))
+                        .response(productService.findById(productId))
                         .build());
     }
 
@@ -69,10 +67,10 @@ public class ProductController {
     }
 
     // Actualizar un producto
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseDto> updateProduct(@PathVariable int id, @RequestBody Product product){
-
-        productService.update(id, product);
+    @PutMapping("/{productId}")
+    public ResponseEntity<ResponseDto> updateProduct(@PathVariable int productId,
+                                                     @RequestBody Product product){
+        productService.update(productId, product);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Producto actualizado correctamente")
@@ -81,10 +79,10 @@ public class ProductController {
     }
 
     // Eliminar un producto por su ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDto> deleteProductById(@PathVariable int id){
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<ResponseDto> deleteProductById(@PathVariable int productId){
 
-        productService.deleteById(id);
+        productService.deleteById(productId);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Producto eliminado correctamente")
@@ -105,12 +103,12 @@ public class ProductController {
     }
 
     // Buscar categoría por su ID
-    @GetMapping("/categories/{id}")
-    public ResponseEntity<ResponseDto> findCategoryById(@PathVariable int id){
+    @GetMapping("/categories/{categoryId}")
+    public ResponseEntity<ResponseDto> findCategoryById(@PathVariable int categoryId){
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Categoria encontrada")
-                        .response(categoryService.findById(id))
+                        .response(categoryService.findById(categoryId))
                         .build());
     }
 
@@ -127,10 +125,10 @@ public class ProductController {
     }
 
     // Actualizar una categoría
-    @PutMapping("/categories/{id}")
-    public ResponseEntity<ResponseDto> updateCategory(@PathVariable int id,
+    @PutMapping("/categories/{categoryId}")
+    public ResponseEntity<ResponseDto> updateCategory(@PathVariable int categoryId,
                                                       @RequestBody ProductCategory category){
-        categoryService.update(id, category);
+        categoryService.update(categoryId, category);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Categoria editada correctamente")
@@ -139,10 +137,10 @@ public class ProductController {
     }
 
     // Eliminar una categoría
-    @DeleteMapping("/categories/{id}")
-    public ResponseEntity<ResponseDto> deleteCategoryById(@PathVariable int id){
+    @DeleteMapping("/categories/{categoryId}")
+    public ResponseEntity<ResponseDto> deleteCategoryById(@PathVariable int categoryId){
 
-        categoryService.delete(id);
+        categoryService.delete(categoryId);
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Categoria eliminada correctamente")
