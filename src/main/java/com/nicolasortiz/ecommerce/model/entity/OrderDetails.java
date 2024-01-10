@@ -24,10 +24,8 @@ public class OrderDetails {
     private String city;
     private String address;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "orderId")
     private Order order; // FK
-
-
 
 }
