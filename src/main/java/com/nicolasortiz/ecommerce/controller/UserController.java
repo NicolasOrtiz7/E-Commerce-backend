@@ -1,11 +1,14 @@
 package com.nicolasortiz.ecommerce.controller;
 
-import com.nicolasortiz.ecommerce.model.dto.ResponseDto;
+import com.nicolasortiz.ecommerce.model.dto.UserDto;
 import com.nicolasortiz.ecommerce.model.entity.User;
 import com.nicolasortiz.ecommerce.service.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -15,43 +18,29 @@ public class UserController {
     private final IUserService userService;
 
     @GetMapping
-    public ResponseEntity<ResponseDto> findAll(){
+    public ResponseEntity<List<UserDto>> findAll(){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Usuarios encontrados")
-                        .response(userService.findAll())
-                        .build());
+                .body(userService.findAll());
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<ResponseDto> findById(@PathVariable int userId){
+    public ResponseEntity<UserDto> findById(@PathVariable int userId){
         return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Usuario encontrado")
-                        .response(userService.findById(userId))
-                        .build());
+                .body(userService.findById(userId));
     }
 
     @PostMapping // Este no se usará. Se usará el de seguridad para crear usuarios.
-    public ResponseEntity<ResponseDto> save(@RequestBody User user){
+    public ResponseEntity<Void> save(@RequestBody User user){
 
         userService.save(user);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Usuario guardado correctamente")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<ResponseDto> deleteById(@PathVariable int userId){
+    public ResponseEntity<Void> deleteById(@PathVariable int userId){
 
         userService.deleteById(userId);
-        return ResponseEntity.ok()
-                .body(ResponseDto.builder()
-                        .message("Usuario eliminado correctamente")
-                        .response("OK")
-                        .build());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
