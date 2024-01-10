@@ -18,7 +18,7 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<ResponseDto> findAll(
-            @PageableDefault(size = 20, page = 0) Pageable pageable){
+            @PageableDefault(size = 20) Pageable pageable){
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Clientes encontrados")

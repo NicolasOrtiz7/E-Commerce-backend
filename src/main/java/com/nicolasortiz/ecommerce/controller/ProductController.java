@@ -8,6 +8,7 @@ import com.nicolasortiz.ecommerce.service.IProductService;
 import com.nicolasortiz.ecommerce.service.IStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class ProductController {
 
     // Buscar todos con paginación
     @GetMapping
-    public ResponseEntity<ResponseDto> findAll(Pageable pageable){
+    public ResponseEntity<ResponseDto> findAll(@PageableDefault(size = 15) Pageable pageable){
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Productos encontrados")
@@ -47,7 +48,7 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<ResponseDto> findProductsByCategoryName(
             @RequestParam("category") String category,
-            Pageable pageable){
+            @PageableDefault(size = 15) Pageable pageable){
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Productos encontrados")
@@ -142,7 +143,7 @@ public class ProductController {
 
     // Buscar el stock de todos los productos
     @GetMapping("/stock")
-    public ResponseEntity<ResponseDto> findAllStock(Pageable pageable){
+    public ResponseEntity<ResponseDto> findAllStock(@PageableDefault(size = 15) Pageable pageable){
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .message("Stock de productos encontrados")
