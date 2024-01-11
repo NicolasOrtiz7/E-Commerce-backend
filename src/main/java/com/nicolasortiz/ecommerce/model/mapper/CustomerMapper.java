@@ -1,6 +1,6 @@
 package com.nicolasortiz.ecommerce.model.mapper;
 
-import com.nicolasortiz.ecommerce.model.dto.CustomerDto;
+import com.nicolasortiz.ecommerce.model.dto.customer.CustomerDto;
 import com.nicolasortiz.ecommerce.model.entity.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

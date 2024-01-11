@@ -28,11 +28,9 @@ public class Order {
 
     // ------------------------------
 
-    @JsonIgnore
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private OrderDetails orderDetails;
 
-//    @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItems> orderItems;
 

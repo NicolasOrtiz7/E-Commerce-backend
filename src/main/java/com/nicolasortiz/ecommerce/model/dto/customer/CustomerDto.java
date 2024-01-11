@@ -1,4 +1,4 @@
-package com.nicolasortiz.ecommerce.model.dto;
+package com.nicolasortiz.ecommerce.model.dto.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

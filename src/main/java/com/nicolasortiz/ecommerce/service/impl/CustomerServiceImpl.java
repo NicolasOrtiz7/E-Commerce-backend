@@ -2,10 +2,9 @@ package com.nicolasortiz.ecommerce.service.impl;
 
 import com.nicolasortiz.ecommerce.exception.MyExistingObjectException;
 import com.nicolasortiz.ecommerce.exception.MyNotFoundException;
-import com.nicolasortiz.ecommerce.model.dto.CustomerDto;
+import com.nicolasortiz.ecommerce.model.dto.customer.CustomerDto;
 import com.nicolasortiz.ecommerce.model.entity.Customer;
 import com.nicolasortiz.ecommerce.model.mapper.CustomerMapper;
-import com.nicolasortiz.ecommerce.model.mapper.UserMapper;
 import com.nicolasortiz.ecommerce.repository.ICustomerRepository;
 import com.nicolasortiz.ecommerce.service.ICustomerService;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

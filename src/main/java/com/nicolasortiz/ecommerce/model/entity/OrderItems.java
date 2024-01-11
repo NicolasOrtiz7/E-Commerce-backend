@@ -19,7 +19,6 @@ public class OrderItems {
 
     private int quantity;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "orderId")
     private Order order; // FK

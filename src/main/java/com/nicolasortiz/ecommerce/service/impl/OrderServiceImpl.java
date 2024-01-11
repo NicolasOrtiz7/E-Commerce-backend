@@ -1,9 +1,13 @@
 package com.nicolasortiz.ecommerce.service.impl;
 
 import com.nicolasortiz.ecommerce.exception.MyNotFoundException;
-import com.nicolasortiz.ecommerce.model.dto.OrderDto;
+import com.nicolasortiz.ecommerce.model.dto.order.OrderRequestDto;
+import com.nicolasortiz.ecommerce.model.dto.order.OrderResponseDto;
 import com.nicolasortiz.ecommerce.model.entity.Order;
+import com.nicolasortiz.ecommerce.model.entity.OrderDetails;
+import com.nicolasortiz.ecommerce.model.entity.OrderItems;
 import com.nicolasortiz.ecommerce.model.mapper.OrderMapper;
+import com.nicolasortiz.ecommerce.repository.IOrderItemsRepository;
 import com.nicolasortiz.ecommerce.repository.IOrderRepository;
 import com.nicolasortiz.ecommerce.service.IOrderService;
 import lombok.RequiredArgsConstructor;
@@ -18,24 +22,43 @@ import java.util.List;
 public class OrderServiceImpl implements IOrderService {
 
     private final IOrderRepository orderRepository;
+    private final IOrderItemsRepository itemsRepository;
 
     @Override
-    public Page<OrderDto> findAll(Pageable pageable) {
+    public Page<OrderResponseDto> findAll(Pageable pageable) {
         return orderRepository.findAll(pageable).map(OrderMapper.INSTANCE::toDto);
     }
 
     @Override
-    public Order findById(int id) {
-        return orderRepository.findById(id)
-                .orElseThrow(()-> new MyNotFoundException("No se encontró la orden"));
+    public OrderResponseDto findById(int id) {
+        return OrderMapper.INSTANCE.toDto(orderRepository.findById(id)
+                .orElseThrow(()-> new MyNotFoundException("No se encontró la orden")));
     }
 
     @Override
-    public List<OrderDto> findByCustomerId(int id) {
+    public List<OrderResponseDto> findByCustomerId(int id) {
         return orderRepository.findByCustomerCustomerId(id)
                 .stream()
                 .map(OrderMapper.INSTANCE::toDto)
                 .toList();
+    }
+
+    // todo: terminar esta función
+    @Override
+    public void saveOrder(OrderRequestDto orderRequest) {
+        // Verificar Cliente
+        // Verificar Producto
+        // Verificar Categoria
+
+        Order orderEntity = OrderMapper.INSTANCE.toEntity(orderRequest);
+
+        for (OrderItems item : orderEntity.getOrderItems()) {
+            item.setOrder(orderEntity);
+            // Buscar producto en BBDD y sumar el total
+            Long total = item.getQuantity() * item.getProduct().getPrice();
+        }
+
+        orderRepository.save(orderEntity);
     }
 
 }
