@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @AllArgsConstructor @NoArgsConstructor
-@Table(name = "products_stock")
+@Table(name = "product_stock")
 public class ProductStock {
 
     @Id
@@ -17,7 +17,7 @@ public class ProductStock {
 
     private int quantity;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "productId")
     private Product product;
 

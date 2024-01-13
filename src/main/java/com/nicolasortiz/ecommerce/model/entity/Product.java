@@ -24,4 +24,16 @@ public class Product {
     @JoinColumn(name = "categoryId")
     private ProductCategory category;
 
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ProductStock productStock;
+
+    // ---------------------------------------
+    @PrePersist
+    public void prePersist() {
+        if (this.productStock == null) {
+            this.productStock = new ProductStock();
+            this.productStock.setQuantity(0);
+            this.productStock.setProduct(this);
+        }
+    }
 }
