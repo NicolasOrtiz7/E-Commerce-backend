@@ -1,5 +1,6 @@
 package com.nicolasortiz.ecommerce.controller;
 
+import com.nicolasortiz.ecommerce.model.dto.product.ProductDto;
 import com.nicolasortiz.ecommerce.model.entity.Product;
 import com.nicolasortiz.ecommerce.model.entity.ProductCategory;
 import com.nicolasortiz.ecommerce.model.entity.ProductStock;
@@ -30,21 +31,21 @@ public class ProductController {
 
     // Buscar todos con paginación
     @GetMapping
-    public ResponseEntity<Page<Product>> findAll2(@PageableDefault(size = 15) Pageable pageable){
+    public ResponseEntity<Page<ProductDto>> findAll2(@PageableDefault(size = 15) Pageable pageable){
         return ResponseEntity.ok()
                 .body(productService.findAll(pageable));
     }
 
     // Buscar producto por su ID
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> findProductById(@PathVariable int productId){
+    public ResponseEntity<ProductDto> findProductById(@PathVariable int productId){
         return ResponseEntity.ok()
                 .body(productService.findById(productId));
     }
 
     // Buscar productos por nombre de categoría y con paginación (param. categoryName required)
     @GetMapping("/search")
-    public ResponseEntity<Page<Product>> findProductsByCategoryName(
+    public ResponseEntity<Page<ProductDto>> findProductsByCategoryName(
             @RequestParam("category") String category,
             @PageableDefault(size = 15) Pageable pageable){
 

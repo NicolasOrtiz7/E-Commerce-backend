@@ -16,7 +16,6 @@ public class ProductStock {
     private int stockId;
 
     private int quantity;
-
     @OneToOne
     @JoinColumn(name = "productId")
     private Product product;

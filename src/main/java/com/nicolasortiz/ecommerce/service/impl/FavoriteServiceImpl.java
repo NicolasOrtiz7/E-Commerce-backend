@@ -2,7 +2,7 @@ package com.nicolasortiz.ecommerce.service.impl;
 
 import com.nicolasortiz.ecommerce.exception.MyExistingObjectException;
 import com.nicolasortiz.ecommerce.exception.MyNotFoundException;
-import com.nicolasortiz.ecommerce.model.dto.FavoriteDto;
+import com.nicolasortiz.ecommerce.model.dto.product.FavoriteDto;
 import com.nicolasortiz.ecommerce.model.entity.CustomerFavorites;
 import com.nicolasortiz.ecommerce.model.mapper.FavoriteMapper;
 import com.nicolasortiz.ecommerce.repository.IFavoriteRepository;

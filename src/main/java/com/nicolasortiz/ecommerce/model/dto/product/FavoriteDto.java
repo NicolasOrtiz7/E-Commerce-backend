@@ -1,4 +1,4 @@
-package com.nicolasortiz.ecommerce.model.dto;
+package com.nicolasortiz.ecommerce.model.dto.product;
 
 import com.nicolasortiz.ecommerce.model.entity.Product;
 import lombok.AllArgsConstructor;

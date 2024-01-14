@@ -1,5 +1,6 @@
 package com.nicolasortiz.ecommerce.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,16 +25,7 @@ public class Product {
     @JoinColumn(name = "categoryId")
     private ProductCategory category;
 
+    @JsonIgnore // Para que no se carguen al hacer peticion a /products/stock
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProductStock productStock;
-
-    // ---------------------------------------
-    @PrePersist
-    public void prePersist() {
-        if (this.productStock == null) {
-            this.productStock = new ProductStock();
-            this.productStock.setQuantity(0);
-            this.productStock.setProduct(this);
-        }
-    }
 }

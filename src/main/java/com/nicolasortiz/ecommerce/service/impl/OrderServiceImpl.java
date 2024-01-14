@@ -78,7 +78,7 @@ public class OrderServiceImpl implements IOrderService {
                 .orElseThrow(()-> new MyNotFoundException("El cliente no está registrado"));
     }
 
-    // Verificar si el producto existen y tienen stock
+    // Verificar si los productos existen y tienen stock
     private List<Product> verifyProduct(List<OrderItems> productIds){
         List<Product> productList = new ArrayList<>();
         Map<Integer, String> outOfStock = new HashMap<>();

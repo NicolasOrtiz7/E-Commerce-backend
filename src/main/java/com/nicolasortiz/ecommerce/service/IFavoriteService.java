@@ -1,6 +1,6 @@
 package com.nicolasortiz.ecommerce.service;
 
-import com.nicolasortiz.ecommerce.model.dto.FavoriteDto;
+import com.nicolasortiz.ecommerce.model.dto.product.FavoriteDto;
 
 import java.util.List;
 

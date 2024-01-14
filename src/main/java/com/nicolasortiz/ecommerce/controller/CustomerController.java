@@ -1,7 +1,7 @@
 package com.nicolasortiz.ecommerce.controller;
 
 import com.nicolasortiz.ecommerce.model.dto.customer.CustomerDto;
-import com.nicolasortiz.ecommerce.model.dto.FavoriteDto;
+import com.nicolasortiz.ecommerce.model.dto.product.FavoriteDto;
 import com.nicolasortiz.ecommerce.model.entity.Customer;
 import com.nicolasortiz.ecommerce.service.ICustomerService;
 import com.nicolasortiz.ecommerce.service.IFavoriteService;
