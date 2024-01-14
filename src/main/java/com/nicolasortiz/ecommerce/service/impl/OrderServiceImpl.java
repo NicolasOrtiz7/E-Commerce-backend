@@ -38,7 +38,7 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public OrderResponseDto findById(int id) {
         return OrderMapper.INSTANCE.toDto(orderRepository.findById(id)
-                .orElseThrow(()-> new MyNotFoundException("No se encontró la orden")));
+                .orElseThrow(() -> new MyNotFoundException("No se encontró la orden")));
     }
 
     @Override
@@ -73,23 +73,27 @@ public class OrderServiceImpl implements IOrderService {
     // --------------------------------------------------------
 
     // Verificar que el cliente está registrado
-    private void verifyCustomer(int customerId){
+    private void verifyCustomer(int customerId) {
         customerRepository.findById(customerId)
-                .orElseThrow(()-> new MyNotFoundException("El cliente no está registrado"));
+                .orElseThrow(() -> new MyNotFoundException("El cliente no está registrado"));
     }
 
     // Verificar si los productos existen y tienen stock
-    private List<Product> verifyProduct(List<OrderItems> productIds){
+    private List<Product> verifyProduct(List<OrderItems> productIds) {
         List<Product> productList = new ArrayList<>();
         Map<Integer, String> outOfStock = new HashMap<>();
 
         productIds.forEach(prod -> {
+            // Verifica que la cantidad sea mayor que 0
+            if (prod.getQuantity() < 1) {
+                throw new NoStockException("La cantidad mínima de compra es 1"); // Crear exception personalizada para este error
+            }
             // Verificar si existe el Producto
             Product product = productRepository.findById(prod.getProduct().getProductId())
-                    .orElseThrow(()-> new MyNotFoundException("No existe el producto: " + prod.getProduct()));
+                    .orElseThrow(() -> new MyNotFoundException("No existe el producto: " + prod.getProduct()));
 
             // Verificar si el producto tiene Stock
-            if (prod.getQuantity() > product.getProductStock().getQuantity()){
+            if (prod.getQuantity() > product.getProductStock().getQuantity()) {
                 outOfStock.put(prod.getProduct().getProductId(), product.getName());
             }
 
@@ -98,9 +102,13 @@ public class OrderServiceImpl implements IOrderService {
             product.getProductStock().setQuantity(updatedStock);
 
             productList.add(product);
+
         });
 
-        if (!outOfStock.isEmpty()){
+//        if (productList.isEmpty()){ // crear una clase de exception nueva para este error
+//            throw new NoStockException("Stock no disponible");
+//        }
+        if (!outOfStock.isEmpty()) {
             throw new NoStockException("No existe stock de los siguientes productos: " + outOfStock);
         }
         return productList;

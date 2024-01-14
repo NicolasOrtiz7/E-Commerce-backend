@@ -31,7 +31,7 @@ public class ProductController {
 
     // Buscar todos con paginación
     @GetMapping
-    public ResponseEntity<Page<ProductDto>> findAll2(@PageableDefault(size = 15) Pageable pageable){
+    public ResponseEntity<Page<ProductDto>> findAll(@PageableDefault(size = 15) Pageable pageable){
         return ResponseEntity.ok()
                 .body(productService.findAll(pageable));
     }

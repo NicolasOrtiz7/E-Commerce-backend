@@ -33,7 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpServletRequest request,
             MyExistingObjectException ex){
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponseDto.builder()
                         .message(ex.getMessage())
                         .datetime(LocalDateTime.now())

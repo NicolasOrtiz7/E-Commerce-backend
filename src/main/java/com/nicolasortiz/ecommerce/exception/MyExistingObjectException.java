@@ -3,7 +3,7 @@ package com.nicolasortiz.ecommerce.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.CONFLICT)
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class MyExistingObjectException extends RuntimeException{
     public MyExistingObjectException(String message) {
         super(message);

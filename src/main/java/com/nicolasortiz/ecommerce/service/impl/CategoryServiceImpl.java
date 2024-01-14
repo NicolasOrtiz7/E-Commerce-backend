@@ -46,7 +46,7 @@ public class CategoryServiceImpl implements ICategoryService {
         }
 
         category.setCategoryId(id);
-        save(category);
+        categoryRepository.save(category);
     }
 
     @Override
