@@ -28,6 +28,7 @@ public class FavoriteServiceImpl implements IFavoriteService {
 
     @Transactional
     @Override
+    // todo: buscar si existe el usuario y el producto, sino lanza error 500
     public void save(int productId, int customerId) {
         // Busca si el producto ya está agregado a la lista de favoritos
         Optional<CustomerFavorites> productFound = favoriteRepository

@@ -7,6 +7,7 @@ import com.nicolasortiz.ecommerce.model.entity.ProductStock;
 import com.nicolasortiz.ecommerce.service.ICategoryService;
 import com.nicolasortiz.ecommerce.service.IProductService;
 import com.nicolasortiz.ecommerce.service.IStockService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -95,7 +96,7 @@ public class ProductController {
 
     // Guardar una categoría
     @PostMapping("/categories")
-    public ResponseEntity<Void> saveCategory(@RequestBody ProductCategory category){
+    public ResponseEntity<Void> saveCategory(@RequestBody @Valid ProductCategory category){
 
         categoryService.save(category);
         return new ResponseEntity<>(HttpStatus.CREATED);

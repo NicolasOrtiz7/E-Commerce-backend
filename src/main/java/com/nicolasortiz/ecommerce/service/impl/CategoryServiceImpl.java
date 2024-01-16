@@ -40,8 +40,8 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public void update(int id, ProductCategory category) {
-        ProductCategory categoryFound = findById(id);
-        if (categoryFound == null){
+        Optional<ProductCategory> categoryFound = Optional.ofNullable(findById(id));
+        if (categoryFound.isEmpty()){
             throw new MyNotFoundException("No existe la categoría, creala antes de editarla");
         }
 
