@@ -15,5 +15,5 @@ public class StockProductDto {
     private String image;
 
     private Long price;
-    private Integer important;
+    private boolean important;
 }

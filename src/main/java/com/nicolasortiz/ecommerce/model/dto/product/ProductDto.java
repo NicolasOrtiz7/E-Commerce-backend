@@ -14,7 +14,7 @@ public class ProductDto {
     private String description;
     private String image;
     private Long price;
-    private Integer important;
+    private boolean important;
 
     private ProductCategory category;
     private ProductStockDto productStock;

@@ -38,8 +38,8 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void save(Product product) {
         ProductStock stock = new ProductStock();
-        stock.setQuantity(0);
-        stock.setProduct(product);
+        stock.setQuantity(product.getProductStock().getQuantity());
+        stock.setProduct(product); // Solución temporal hasta hacer dtos
 
         product.setProductStock(stock);
         productRepository.save(product);
