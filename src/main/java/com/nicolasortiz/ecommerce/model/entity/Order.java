@@ -1,6 +1,5 @@
 package com.nicolasortiz.ecommerce.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +19,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
 
+    @Column(nullable = false)
     private LocalDateTime datetime;
 
     @ManyToOne

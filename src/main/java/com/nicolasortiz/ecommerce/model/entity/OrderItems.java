@@ -1,7 +1,7 @@
 package com.nicolasortiz.ecommerce.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +17,8 @@ public class OrderItems {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderItemsId;
 
+    @NotNull
+    @Column(nullable = false)
     private int quantity;
 
     @ManyToOne

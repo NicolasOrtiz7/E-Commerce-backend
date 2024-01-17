@@ -5,6 +5,7 @@ import com.nicolasortiz.ecommerce.model.dto.product.FavoriteDto;
 import com.nicolasortiz.ecommerce.model.entity.Customer;
 import com.nicolasortiz.ecommerce.service.ICustomerService;
 import com.nicolasortiz.ecommerce.service.IFavoriteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +41,7 @@ public class CustomerController {
 
     // Este no se usará. Se usará el de seguridad.
     @PostMapping
-    public ResponseEntity<Void> saveCustomer(@RequestBody Customer customer){
+    public ResponseEntity<Void> saveCustomer(@RequestBody @Valid Customer customer){
 
         customerService.save(customer);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -56,14 +57,14 @@ public class CustomerController {
 
     @PostMapping("/favorites/{customerId}/{productId}")
     public ResponseEntity<Void> saveFavorite(@PathVariable int customerId,
-                                                    @PathVariable int productId){
+                                             @PathVariable int productId){
         favoriteService.save(productId, customerId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/favorites/{customerId}/{productId}")
     public ResponseEntity<Void> deleteFavorite(@PathVariable int customerId,
-                                                      @PathVariable int productId){
+                                               @PathVariable int productId){
         favoriteService.delete(productId, customerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -1,6 +1,7 @@
 package com.nicolasortiz.ecommerce.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,10 @@ public class ProductStock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int stockId;
 
+    @NotNull
+    @Column(nullable = false)
     private int quantity;
+
     @OneToOne
     @JoinColumn(name = "productId")
     private Product product;

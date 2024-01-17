@@ -56,7 +56,7 @@ public class ProductController {
 
     // Guardar un producto
     @PostMapping
-    public ResponseEntity<Void> saveProduct(@RequestBody Product product){
+    public ResponseEntity<Void> saveProduct(@RequestBody @Valid Product product){
 
         productService.save(product);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -65,7 +65,7 @@ public class ProductController {
     // Actualizar un producto
     @PutMapping("/{productId}")
     public ResponseEntity<Void> updateProduct(@PathVariable int productId,
-                                              @RequestBody Product product){
+                                              @RequestBody @Valid Product product){
         productService.update(productId, product);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -105,7 +105,7 @@ public class ProductController {
     // Actualizar una categoría
     @PutMapping("/categories/{categoryId}")
     public ResponseEntity<Void> updateCategory(@PathVariable int categoryId,
-                                                      @RequestBody ProductCategory category){
+                                               @RequestBody @Valid ProductCategory category){
         categoryService.update(categoryId, category);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -137,7 +137,7 @@ public class ProductController {
     // Actualizar stock de un producto
     @PutMapping("/stock/product/{productId}/{quantity}")
     public ResponseEntity<Void> updateStock(@PathVariable int productId,
-                                                   @PathVariable int quantity){
+                                            @PathVariable int quantity){
         stockService.update(productId, quantity);
         return new ResponseEntity<>(HttpStatus.OK);
     }

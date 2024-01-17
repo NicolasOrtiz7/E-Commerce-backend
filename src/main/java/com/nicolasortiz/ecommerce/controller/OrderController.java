@@ -3,6 +3,7 @@ package com.nicolasortiz.ecommerce.controller;
 import com.nicolasortiz.ecommerce.model.dto.order.OrderRequestDto;
 import com.nicolasortiz.ecommerce.model.dto.order.OrderResponseDto;
 import com.nicolasortiz.ecommerce.service.IOrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +41,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveOrder(@RequestBody OrderRequestDto orderRequest){
+    public ResponseEntity<Void> saveOrder(@RequestBody @Valid OrderRequestDto orderRequest){
         orderService.saveOrder(orderRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

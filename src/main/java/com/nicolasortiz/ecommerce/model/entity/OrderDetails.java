@@ -1,6 +1,7 @@
 package com.nicolasortiz.ecommerce.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +18,19 @@ public class OrderDetails {
     private int orderDetailsId;
 
     // Datos de pago
+    @Column(nullable = false)
     private Long total;
+
+    @Column(nullable = false)
     private String payment;
 
     // Datos de envío
+    @NotBlank
+    @Column(nullable = false)
     private String city;
+
+    @NotBlank
+    @Column(nullable = false)
     private String address;
 
     @OneToOne

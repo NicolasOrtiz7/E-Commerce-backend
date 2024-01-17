@@ -19,6 +19,7 @@ public class ProductCategory {
     private int categoryId;
 
     @Size(min = 3, message = "El nombre debe tener al menos 3 letras")
+    @Column(nullable = false)
     private String name;
 
     private String image;
