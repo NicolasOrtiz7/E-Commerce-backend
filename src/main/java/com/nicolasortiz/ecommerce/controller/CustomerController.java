@@ -1,7 +1,7 @@
 package com.nicolasortiz.ecommerce.controller;
 
 import com.nicolasortiz.ecommerce.model.dto.customer.CustomerDto;
-import com.nicolasortiz.ecommerce.model.dto.product.FavoriteDto;
+import com.nicolasortiz.ecommerce.model.dto.product.ProductFavoriteDto;
 import com.nicolasortiz.ecommerce.model.entity.Customer;
 import com.nicolasortiz.ecommerce.service.ICustomerService;
 import com.nicolasortiz.ecommerce.service.IFavoriteService;
@@ -50,7 +50,7 @@ public class CustomerController {
     // ---------------- Favorites ----------------
 
     @GetMapping("/favorites/{customerId}")
-    public ResponseEntity<List<FavoriteDto>> findAllFavorites(@PathVariable int customerId){
+    public ResponseEntity<List<ProductFavoriteDto>> findAllFavorites(@PathVariable int customerId){
         return ResponseEntity.ok()
                 .body(favoriteService.findFavoritesByCustomerId(customerId));
     }

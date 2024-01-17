@@ -37,7 +37,7 @@ public class Product {
     @JoinColumn(name = "categoryId")
     private ProductCategory category;
 
-    @JsonIgnore // Para que no se carguen al hacer peticion a /products/stock
+//    @JsonIgnore // Para que no se carguen al hacer peticion a /products/stock
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProductStock productStock;
 

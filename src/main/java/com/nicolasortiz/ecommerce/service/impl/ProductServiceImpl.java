@@ -3,6 +3,7 @@ package com.nicolasortiz.ecommerce.service.impl;
 import com.nicolasortiz.ecommerce.exception.MyNotFoundException;
 import com.nicolasortiz.ecommerce.model.dto.product.ProductDto;
 import com.nicolasortiz.ecommerce.model.entity.Product;
+import com.nicolasortiz.ecommerce.model.entity.ProductStock;
 import com.nicolasortiz.ecommerce.model.mapper.ProductMapper;
 import com.nicolasortiz.ecommerce.repository.IProductRepository;
 import com.nicolasortiz.ecommerce.service.IProductService;
@@ -36,6 +37,11 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public void save(Product product) {
+        ProductStock stock = new ProductStock();
+        stock.setQuantity(0);
+        stock.setProduct(product);
+
+        product.setProductStock(stock);
         productRepository.save(product);
     }
 

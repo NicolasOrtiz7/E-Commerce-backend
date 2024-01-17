@@ -1,12 +1,12 @@
 package com.nicolasortiz.ecommerce.service;
 
-import com.nicolasortiz.ecommerce.model.dto.product.FavoriteDto;
+import com.nicolasortiz.ecommerce.model.dto.product.ProductFavoriteDto;
 
 import java.util.List;
 
 public interface IFavoriteService {
 
-    List<FavoriteDto> findFavoritesByCustomerId(int id);
+    List<ProductFavoriteDto> findFavoritesByCustomerId(int id);
 
     void save(int productId, int customerId);
 

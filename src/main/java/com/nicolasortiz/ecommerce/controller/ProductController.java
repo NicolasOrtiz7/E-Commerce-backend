@@ -1,6 +1,7 @@
 package com.nicolasortiz.ecommerce.controller;
 
 import com.nicolasortiz.ecommerce.model.dto.product.ProductDto;
+import com.nicolasortiz.ecommerce.model.dto.stock.StockDto;
 import com.nicolasortiz.ecommerce.model.entity.Product;
 import com.nicolasortiz.ecommerce.model.entity.ProductCategory;
 import com.nicolasortiz.ecommerce.model.entity.ProductStock;
@@ -122,14 +123,14 @@ public class ProductController {
 
     // Buscar el stock de todos los productos
     @GetMapping("/stock")
-    public ResponseEntity<Page<ProductStock>> findAllStock(@PageableDefault(size = 15) Pageable pageable){
+    public ResponseEntity<Page<StockDto>> findAllStock(@PageableDefault(size = 15) Pageable pageable){
         return ResponseEntity.ok()
                 .body(stockService.findAll(pageable));
     }
 
     // Buscar el stock de un producto por su productId
     @GetMapping("/stock/{productId}")
-    public ResponseEntity<ProductStock> findStockByProductId(@PathVariable int productId){
+    public ResponseEntity<StockDto> findStockByProductId(@PathVariable int productId){
         return ResponseEntity.ok()
                 .body(stockService.findByProductId(productId));
     }

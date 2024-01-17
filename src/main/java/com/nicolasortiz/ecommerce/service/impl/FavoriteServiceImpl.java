@@ -2,7 +2,7 @@ package com.nicolasortiz.ecommerce.service.impl;
 
 import com.nicolasortiz.ecommerce.exception.MyExistingObjectException;
 import com.nicolasortiz.ecommerce.exception.MyNotFoundException;
-import com.nicolasortiz.ecommerce.model.dto.product.FavoriteDto;
+import com.nicolasortiz.ecommerce.model.dto.product.ProductFavoriteDto;
 import com.nicolasortiz.ecommerce.model.entity.CustomerFavorites;
 import com.nicolasortiz.ecommerce.model.mapper.FavoriteMapper;
 import com.nicolasortiz.ecommerce.repository.IFavoriteRepository;
@@ -21,7 +21,7 @@ public class FavoriteServiceImpl implements IFavoriteService {
     private final IFavoriteRepository favoriteRepository;
 
     @Override
-    public List<FavoriteDto> findFavoritesByCustomerId(int id) {
+    public List<ProductFavoriteDto> findFavoritesByCustomerId(int id) {
         return favoriteRepository.findByCustomerCustomerId(id).stream()
                 .map(FavoriteMapper.INSTANCE::toDto).toList();
     }

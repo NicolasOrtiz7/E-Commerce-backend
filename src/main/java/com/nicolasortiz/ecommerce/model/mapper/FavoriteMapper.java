@@ -1,6 +1,6 @@
 package com.nicolasortiz.ecommerce.model.mapper;
 
-import com.nicolasortiz.ecommerce.model.dto.product.FavoriteDto;
+import com.nicolasortiz.ecommerce.model.dto.product.ProductFavoriteDto;
 import com.nicolasortiz.ecommerce.model.entity.CustomerFavorites;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -10,6 +10,6 @@ public interface FavoriteMapper {
 
     FavoriteMapper INSTANCE = Mappers.getMapper(FavoriteMapper.class);
 
-    FavoriteDto toDto(CustomerFavorites customerFavorites);
+    ProductFavoriteDto toDto(CustomerFavorites customerFavorites);
 
 }
