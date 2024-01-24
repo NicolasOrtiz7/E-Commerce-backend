@@ -5,6 +5,8 @@ import com.nicolasortiz.ecommerce.model.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 
 public interface IProductService {
 
@@ -13,6 +15,10 @@ public interface IProductService {
     ProductDto findById(int id);
 
     Page<ProductDto> findByCategoryName(Pageable pageable, String name);
+
+    Page<ProductDto> findByNameContaining(Pageable pageable, String keyword);
+
+    List<ProductDto> findByImportant();
 
     void save(Product product);
 

@@ -4,7 +4,6 @@ import com.nicolasortiz.ecommerce.model.dto.product.ProductDto;
 import com.nicolasortiz.ecommerce.model.dto.stock.StockDto;
 import com.nicolasortiz.ecommerce.model.entity.Product;
 import com.nicolasortiz.ecommerce.model.entity.ProductCategory;
-import com.nicolasortiz.ecommerce.model.entity.ProductStock;
 import com.nicolasortiz.ecommerce.service.ICategoryService;
 import com.nicolasortiz.ecommerce.service.IProductService;
 import com.nicolasortiz.ecommerce.service.IStockService;
@@ -38,6 +37,7 @@ public class ProductController {
                 .body(productService.findAll(pageable));
     }
 
+
     // Buscar producto por su ID
     @GetMapping("/{productId}")
     public ResponseEntity<ProductDto> findProductById(@PathVariable int productId){
@@ -45,14 +45,24 @@ public class ProductController {
                 .body(productService.findById(productId));
     }
 
-    // Buscar productos por nombre de categoría y con paginación (param. categoryName required)
+    // Busca productos por categoría o nombre, se pasan por parámetro
     @GetMapping("/search")
-    public ResponseEntity<Page<ProductDto>> findProductsByCategoryName(
-            @RequestParam("category") String category,
+    public ResponseEntity<Page<ProductDto>> searchProducts(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String keyword,
             @PageableDefault(size = 15) Pageable pageable){
+        if (keyword != null){ // Si existe keyword, filtra por keyword
+            return ResponseEntity.ok().body(productService.findByNameContaining(pageable, keyword));
+        } // Si no existe, filtra por categoría
+        else return ResponseEntity.ok().body(productService.findByCategoryName(pageable, category));
+    }
+
+    // Buscar productos por si es Destacado
+    @GetMapping("/search/important")
+    public ResponseEntity<List<ProductDto>> findProductsByImportant(){
 
         return ResponseEntity.ok()
-                .body(productService.findByCategoryName(pageable, category));
+                .body(productService.findByImportant());
     }
 
     // Guardar un producto

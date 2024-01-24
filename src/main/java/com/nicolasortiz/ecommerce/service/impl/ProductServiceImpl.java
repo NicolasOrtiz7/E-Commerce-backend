@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +35,18 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Page<ProductDto> findByCategoryName(Pageable pageable, String name) {
         return productRepository.findByCategoryName(pageable, name).map(ProductMapper.INSTANCE::toDto);
+    }
+
+    @Override
+    public Page<ProductDto> findByNameContaining(Pageable pageable, String keyword) {
+        return productRepository.findByNameContaining(pageable, keyword).map(ProductMapper.INSTANCE::toDto);
+    }
+
+    @Override
+    public List<ProductDto> findByImportant() {
+        List<Product> productList = productRepository.findByImportant(true);
+        return productList.stream()
+                .map(ProductMapper.INSTANCE::toDto).toList();
     }
 
     @Override
