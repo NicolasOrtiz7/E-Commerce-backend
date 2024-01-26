@@ -58,7 +58,10 @@ public class OrderServiceImpl implements IOrderService {
         verifyCustomer(orderEntity.getCustomer().getCustomerId());
 
         // Verificar que todos los productos existen y tienen stock
-        List<Product> productList = verifyProduct(orderEntity.getOrderItems());
+        List<Product> productList = verifyProduct(orderRequest.getOrderItems());
+
+        // Establece el Product en la entidad de OrderItems (porque este solo recibía el productId y no el Product Entity)
+        orderEntity.setOrderItems(setProductToOrderItem(orderRequest.getOrderItems()));
 
         // Calcular el total de la orden
         calculateOrderTotal(orderEntity, productList);
@@ -79,7 +82,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     // Verificar si los productos existen y tienen stock
-    private List<Product> verifyProduct(List<OrderItems> productIds) {
+    private List<Product> verifyProduct(List<OrderItemsReq> productIds) {
         List<Product> productList = new ArrayList<>();
         Map<Integer, String> outOfStock = new HashMap<>();
 
@@ -89,12 +92,12 @@ public class OrderServiceImpl implements IOrderService {
                 throw new NoStockException("La cantidad mínima de compra es 1"); // Crear exception personalizada para este error
             }
             // Verificar si existe el Producto
-            Product product = productRepository.findById(prod.getProduct().getProductId())
-                    .orElseThrow(() -> new MyNotFoundException("No existe el producto: " + prod.getProduct()));
+            Product product = productRepository.findById(prod.getProductId())
+                    .orElseThrow(() -> new MyNotFoundException("No existe el producto: " + prod.getProductId()));
 
             // Verificar si el producto tiene Stock
             if (prod.getQuantity() > product.getProductStock().getQuantity()) {
-                outOfStock.put(prod.getProduct().getProductId(), product.getName());
+                outOfStock.put(prod.getProductId(), product.getName());
             }
 
             // Actualizar Stock
@@ -112,6 +115,17 @@ public class OrderServiceImpl implements IOrderService {
             throw new NoStockException("No existe stock de los siguientes productos: " + outOfStock);
         }
         return productList;
+    }
+
+    // Asigna el Product en la tabla de OrderItems
+    private List<OrderItems> setProductToOrderItem(List<OrderItemsReq> orderReq){
+        return orderReq.stream()
+                .map(prod -> OrderItems.builder()
+                        .quantity(prod.getQuantity())
+                        .product(Product.builder()
+                                .productId(prod.getProductId())
+                                .build())
+                        .build()).toList();
     }
 
     private void calculateOrderTotal(Order orderEntity, List<Product> productList) {

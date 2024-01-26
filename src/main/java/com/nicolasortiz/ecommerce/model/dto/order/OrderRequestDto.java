@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderRequestDto {
 
     private OrderCustomerReq customer;
-    private LocalDateTime datetime;
+//    private LocalDateTime datetime;
     private List<OrderItemsReq> orderItems;
     private OrderDetailsReq orderDetails;
 }
