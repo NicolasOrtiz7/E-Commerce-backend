@@ -1,7 +1,6 @@
 package com.nicolasortiz.ecommerce.service.impl;
 
 import com.nicolasortiz.ecommerce.exception.MyNotFoundException;
-import com.nicolasortiz.ecommerce.model.dto.product.ProductStockDto;
 import com.nicolasortiz.ecommerce.model.dto.stock.StockDto;
 import com.nicolasortiz.ecommerce.model.entity.ProductStock;
 import com.nicolasortiz.ecommerce.model.mapper.StockMapper;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

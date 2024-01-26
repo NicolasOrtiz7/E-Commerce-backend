@@ -36,13 +36,13 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void save(User user) {
-        UserDto userFound = findById(user.getUserId());
+        findById(user.getUserId());
         userRepository.save(user);
     }
 
     @Override
     public void deleteById(int id) {
-        UserDto userDeleted = findById(id);
+        findById(id);
         userRepository.deleteById(id);
     }
 }

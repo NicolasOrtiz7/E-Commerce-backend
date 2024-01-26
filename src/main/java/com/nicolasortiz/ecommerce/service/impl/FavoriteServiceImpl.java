@@ -34,7 +34,7 @@ public class FavoriteServiceImpl implements IFavoriteService {
         Optional<CustomerFavorites> productFound = favoriteRepository
                 .findExistingFavorite(productId, customerId);
 
-        if (productFound.isPresent()){
+        if (productFound.isPresent()) {
             throw new MyExistingObjectException("Ya lo agregaste a favoritos");
         }
 
@@ -45,9 +45,9 @@ public class FavoriteServiceImpl implements IFavoriteService {
     @Transactional
     @Override
     public void delete(int productId, int customerId) {
-        CustomerFavorites productFound = favoriteRepository
+        favoriteRepository
                 .findExistingFavorite(productId, customerId)
-                .orElseThrow(()-> new MyNotFoundException("No tienes ese producto en favoritos"));
+                .orElseThrow(() -> new MyNotFoundException("No tienes ese producto en favoritos"));
 
         favoriteRepository.deleteFavorite(productId, customerId);
     }

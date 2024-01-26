@@ -2,7 +2,6 @@ package com.nicolasortiz.ecommerce.exception;
 
 import com.nicolasortiz.ecommerce.model.dto.ErrorResponseDto;
 import com.nicolasortiz.ecommerce.model.dto.InvalidResponseDto;
-import com.nicolasortiz.ecommerce.model.entity.Product;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,9 +25,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> errors = new HashMap<>();
 
         ex.getBindingResult().getFieldErrors()
-                .forEach(error ->{
-                    errors.put(error.getField(), error.getDefaultMessage());
-                });
+                .forEach(error ->
+                    errors.put(error.getField(), error.getDefaultMessage())
+                );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(InvalidResponseDto.builder()

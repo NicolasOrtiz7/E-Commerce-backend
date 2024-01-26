@@ -1,6 +1,5 @@
 package com.nicolasortiz.ecommerce.service;
 
-import com.nicolasortiz.ecommerce.model.dto.product.ProductStockDto;
 import com.nicolasortiz.ecommerce.model.dto.stock.StockDto;
 import com.nicolasortiz.ecommerce.model.entity.ProductStock;
 import org.springframework.data.domain.Page;

@@ -10,7 +10,7 @@ public interface IFavoriteService {
 
     void save(int productId, int customerId);
 
-    // Elimina pasandole el id del
+    // Elimina pasándole el id del
     void delete(int productId, int customerId);
 
 }

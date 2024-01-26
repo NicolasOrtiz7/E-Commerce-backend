@@ -12,6 +12,4 @@ public interface CustomerMapper {
 
     CustomerDto toDto(Customer customer);
 
-    Customer toCustomer(CustomerDto dto);
-
 }

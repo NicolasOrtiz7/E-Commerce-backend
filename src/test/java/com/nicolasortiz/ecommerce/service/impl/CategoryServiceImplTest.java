@@ -27,7 +27,7 @@ class CategoryServiceImplTest {
 
     // ----------------------------------------------
 
-    private int id = 1;
+    private final int id = 1;
     private List<ProductCategory> mockList = new ArrayList<>();
     private ProductCategory cat1;
     private ProductCategory cat2;

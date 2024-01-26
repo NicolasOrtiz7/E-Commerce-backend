@@ -11,5 +11,4 @@ public class OrderItemsReq {
 
     private int quantity;
     private int productId;
-//    private OrderProductReq product;
 }

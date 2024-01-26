@@ -1,6 +1,5 @@
 package com.nicolasortiz.ecommerce.repository;
 
-import com.nicolasortiz.ecommerce.model.dto.product.ProductDto;
 import com.nicolasortiz.ecommerce.model.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -61,14 +61,14 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public void update(int id, Product product) {
-        ProductDto productFound = findById(id);
+        findById(id);
         product.setProductId(id);
         save(product);
     }
 
     @Override
     public void deleteById(int id) {
-        ProductDto productFound = findById(id);
+        findById(id);
         productRepository.deleteById(id);
     }
 }

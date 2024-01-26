@@ -2,7 +2,6 @@ package com.nicolasortiz.ecommerce.service;
 
 import com.nicolasortiz.ecommerce.model.dto.order.OrderRequestDto;
 import com.nicolasortiz.ecommerce.model.dto.order.OrderResponseDto;
-import com.nicolasortiz.ecommerce.model.entity.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

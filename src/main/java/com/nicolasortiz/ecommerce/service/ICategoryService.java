@@ -3,7 +3,6 @@ package com.nicolasortiz.ecommerce.service;
 import com.nicolasortiz.ecommerce.model.entity.ProductCategory;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ICategoryService {
 

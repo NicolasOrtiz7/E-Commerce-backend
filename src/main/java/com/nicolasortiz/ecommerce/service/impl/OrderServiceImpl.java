@@ -51,16 +51,16 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public void saveOrder(OrderRequestDto orderRequest) {
-        // Mapear OrderRequestDto a Order
+        // Mapear OrderDto a Order entity
         Order orderEntity = OrderMapper.INSTANCE.toEntity(orderRequest);
 
-        // Verificar que el cliente está registrado
-        verifyCustomer(orderEntity.getCustomer().getCustomerId());
+        // Verificar el Customer
+        verifyCustomer(orderEntity.getCustomer());
 
         // Verificar que todos los productos existen y tienen stock
-        List<Product> productList = verifyProduct(orderRequest.getOrderItems());
+        List<Product> productList = verifyProducts(orderRequest.getOrderItems());
 
-        // Establece el Product en la entidad de OrderItems (porque este solo recibía el productId y no el Product Entity)
+        // Establece el Product en la entidad de OrderItems
         orderEntity.setOrderItems(setProductToOrderItem(orderRequest.getOrderItems()));
 
         // Calcular el total de la orden
@@ -75,14 +75,20 @@ public class OrderServiceImpl implements IOrderService {
 
     // --------------------------------------------------------
 
-    // Verificar que el cliente está registrado
-    private void verifyCustomer(int customerId) {
-        customerRepository.findById(customerId)
+    // Verificar que el cliente está registrado y su email coincide
+    private void verifyCustomer(Customer customer) {
+        // Buscar Customer en base de datos por ID
+        Customer customerDB = customerRepository.findById(customer.getCustomerId())
                 .orElseThrow(() -> new MyNotFoundException("El cliente no está registrado"));
+
+        // Verificar que el email de la base de datos es el mismo que el que hace la petición
+        if (customerDB.getEmail() != customer.getEmail()) {
+            throw new RuntimeException("El cliente no coincide");
+        }
     }
 
     // Verificar si los productos existen y tienen stock
-    private List<Product> verifyProduct(List<OrderItemsReq> productIds) {
+    private List<Product> verifyProducts(List<OrderItemsReq> productIds) {
         List<Product> productList = new ArrayList<>();
         Map<Integer, String> outOfStock = new HashMap<>();
 
@@ -117,8 +123,8 @@ public class OrderServiceImpl implements IOrderService {
         return productList;
     }
 
-    // Asigna el Product en la tabla de OrderItems
-    private List<OrderItems> setProductToOrderItem(List<OrderItemsReq> orderReq){
+    // Asigna el Product en la entidad de OrderItems (porque este solo recibía el productId y no el Product Entity)
+    private List<OrderItems> setProductToOrderItem(List<OrderItemsReq> orderReq) {
         return orderReq.stream()
                 .map(prod -> OrderItems.builder()
                         .quantity(prod.getQuantity())
@@ -128,6 +134,7 @@ public class OrderServiceImpl implements IOrderService {
                         .build()).toList();
     }
 
+    // Calcula el precio total de la Order
     private void calculateOrderTotal(Order orderEntity, List<Product> productList) {
         long total = 0;
 
