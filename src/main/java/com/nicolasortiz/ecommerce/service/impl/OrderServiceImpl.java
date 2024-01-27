@@ -82,7 +82,7 @@ public class OrderServiceImpl implements IOrderService {
                 .orElseThrow(() -> new MyNotFoundException("El cliente no está registrado"));
 
         // Verificar que el email de la base de datos es el mismo que el que hace la petición
-        if (customerDB.getEmail() != customer.getEmail()) {
+        if (! customerDB.getEmail().equals(customer.getEmail())) {
             throw new RuntimeException("El cliente no coincide");
         }
     }
