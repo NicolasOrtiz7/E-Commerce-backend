@@ -73,9 +73,9 @@ public class OrderServiceImpl implements IOrderService {
         orderEntity.setDatetime(LocalDateTime.now());
         orderEntity.getOrderDetails().setOrder(orderEntity);
 
-        try{
+        try {
             generateInvoice(orderEntity);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Error al crear la factura, intente nuevamente.");
         }
         orderRepository.save(orderEntity);
@@ -85,18 +85,18 @@ public class OrderServiceImpl implements IOrderService {
     public void generateInvoice(Order order) throws FileNotFoundException, JRException {
 
         // Lista de productos de la orden
-        List<InvoiceDto> invoices = new ArrayList<>();
+        List<InvoiceDto> products = new ArrayList<>();
 
         // Iterar la lista de productos de la orden
         order.getOrderItems()
                 .forEach(item -> {
-                    // Busca el producto en la base de datos para obtener el nombre
-                    Product product = productRepository
-                            .findById(item.getProduct().getProductId())
-                            .orElseThrow(()-> new MyNotFoundException("No existe el producto"));
+                            // Busca el producto en la base de datos para obtener el nombre
+                            Product product = productRepository
+                                    .findById(item.getProduct().getProductId())
+                                    .orElseThrow(() -> new MyNotFoundException("Producto no encontrado"));
 
-                    // Agrega el producto a la lista
-                            invoices.add(InvoiceDto.builder()
+                            // Agrega el producto a la lista
+                            products.add(InvoiceDto.builder()
                                     .productId(item.getProduct().getProductId())
                                     .name(product.getName())
                                     .quantity(item.getQuantity())
@@ -107,18 +107,18 @@ public class OrderServiceImpl implements IOrderService {
                         }
                 );
 
-        // Crea una fuente de datos para el informe JasperReports a partir de la List<InvoicesDto>
-        JRBeanCollectionDataSource collection = new JRBeanCollectionDataSource(invoices);
+        // Crea una fuente de datos para el reporte a partir de la List<InvoicesDto>
+        JRBeanCollectionDataSource collection = new JRBeanCollectionDataSource(products);
 
         // Compila el reporte
         JasperReport compileReport = JasperCompileManager
                 .compileReport(new FileInputStream("src/main/resources/templates/FacturaCompra.jrxml"));
 
-        // Buscar cliente para llenar los datos
+        // Buscar cliente para obtener sus datos y asignarlos en la factura
         Customer customer = customerRepository.findById(order.getCustomer().getCustomerId())
-                .orElseThrow(()-> new MyNotFoundException("Cliente no encontrado"));
+                .orElseThrow(() -> new MyNotFoundException("Cliente no encontrado"));
 
-        // Parámetros extras para el reporte
+        // Parámetros extras para la factura
         HashMap<String, Object> map = new HashMap<>();
         map.put("total", order.getOrderDetails().getTotal());
         map.put("customerName", customer.getName());
@@ -127,7 +127,7 @@ public class OrderServiceImpl implements IOrderService {
         map.put("city", order.getOrderDetails().getCity());
         map.put("address", order.getOrderDetails().getAddress());
 
-        // Llena el informe con datos y crea un objeto JasperPrint
+        // Llena el reporte con datos y crea un objeto JasperPrint
         JasperPrint report = JasperFillManager.fillReport(compileReport, map, collection);
 
         // Exporta el PDF y le asigna el nombre
