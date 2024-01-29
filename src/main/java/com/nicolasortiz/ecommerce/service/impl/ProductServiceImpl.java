@@ -56,6 +56,8 @@ public class ProductServiceImpl implements IProductService {
         stock.setProduct(product); // Solución temporal hasta hacer dtos
 
         product.setProductStock(stock);
+        product.setActive(true);
+
         productRepository.save(product);
     }
 
@@ -63,7 +65,8 @@ public class ProductServiceImpl implements IProductService {
     public void update(int id, Product product) {
         findById(id);
         product.setProductId(id);
-        save(product);
+        product.setProductStock(null); // Solución temporal hasta hacer dtos. Evita que se edite el stock desde acá
+        productRepository.save(product);
     }
 
     @Override
