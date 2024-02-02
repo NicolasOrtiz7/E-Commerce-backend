@@ -76,11 +76,13 @@ public class OrderServiceImpl implements IOrderService {
         try {
             generateInvoice(orderEntity);
         } catch (Exception e) {
+            // Temporal. Crear excepción personalizada
             throw new RuntimeException("Error al crear la factura, intente nuevamente.");
         }
         orderRepository.save(orderEntity);
     }
 
+    // Genera la factura de la compra usando JasperReports
     @Override
     public void generateInvoice(Order order) throws FileNotFoundException, JRException {
 
