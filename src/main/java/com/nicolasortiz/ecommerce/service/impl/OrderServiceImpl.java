@@ -2,7 +2,6 @@ package com.nicolasortiz.ecommerce.service.impl;
 
 import com.nicolasortiz.ecommerce.exception.MyNotFoundException;
 import com.nicolasortiz.ecommerce.exception.NoStockException;
-import com.nicolasortiz.ecommerce.model.dto.invoice.InvoiceDto;
 import com.nicolasortiz.ecommerce.model.dto.order.OrderRequestDto;
 import com.nicolasortiz.ecommerce.model.dto.order.OrderResponseDto;
 import com.nicolasortiz.ecommerce.model.dto.order.request.OrderItemsReq;
@@ -11,27 +10,27 @@ import com.nicolasortiz.ecommerce.model.mapper.OrderMapper;
 import com.nicolasortiz.ecommerce.repository.ICustomerRepository;
 import com.nicolasortiz.ecommerce.repository.IOrderRepository;
 import com.nicolasortiz.ecommerce.repository.IProductRepository;
+import com.nicolasortiz.ecommerce.service.IInvoiceService;
 import com.nicolasortiz.ecommerce.service.IOrderService;
 import lombok.RequiredArgsConstructor;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderServiceImpl implements IOrderService {
 
     private final IOrderRepository orderRepository;
     private final IProductRepository productRepository;
     private final ICustomerRepository customerRepository;
+
+    private final IInvoiceService invoiceService;
 
     @Override
     public Page<OrderResponseDto> findAll(Pageable pageable) {
@@ -73,68 +72,14 @@ public class OrderServiceImpl implements IOrderService {
         orderEntity.setDatetime(LocalDateTime.now());
         orderEntity.getOrderDetails().setOrder(orderEntity);
 
+        // Genera la factura y la envía por email al comprador
         try {
-            generateInvoice(orderEntity);
+            invoiceService.generateInvoice(orderEntity);
         } catch (Exception e) {
             // Temporal. Crear excepción personalizada
             throw new RuntimeException("Error al crear la factura, intente nuevamente.");
         }
         orderRepository.save(orderEntity);
-    }
-
-    // Genera la factura de la compra usando JasperReports
-    @Override
-    public void generateInvoice(Order order) throws FileNotFoundException, JRException {
-
-        // Lista de productos de la orden
-        List<InvoiceDto> products = new ArrayList<>();
-
-        // Iterar la lista de productos de la orden
-        order.getOrderItems()
-                .forEach(item -> {
-                            // Busca el producto en la base de datos para obtener el nombre
-                            Product product = productRepository
-                                    .findById(item.getProduct().getProductId())
-                                    .orElseThrow(() -> new MyNotFoundException("Producto no encontrado"));
-
-                            // Agrega el producto a la lista
-                            products.add(InvoiceDto.builder()
-                                    .productId(item.getProduct().getProductId())
-                                    .name(product.getName())
-                                    .quantity(item.getQuantity())
-                                    .price(product.getPrice())
-                                    .subtotal(item.getQuantity() * product.getPrice())
-                                    .total(order.getOrderDetails().getTotal())
-                                    .build());
-                        }
-                );
-
-        // Crea una fuente de datos para el reporte a partir de la List<InvoicesDto>
-        JRBeanCollectionDataSource collection = new JRBeanCollectionDataSource(products);
-
-        // Compila el reporte
-        JasperReport compileReport = JasperCompileManager
-                .compileReport(new FileInputStream("src/main/resources/templates/FacturaCompra.jrxml"));
-
-        // Buscar cliente para obtener sus datos y asignarlos en la factura
-        Customer customer = customerRepository.findById(order.getCustomer().getCustomerId())
-                .orElseThrow(() -> new MyNotFoundException("Cliente no encontrado"));
-
-        // Parámetros extras para la factura
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("total", order.getOrderDetails().getTotal());
-        map.put("customerName", customer.getName());
-        map.put("customerEmail", customer.getEmail());
-        map.put("customerPhone", customer.getPhone());
-        map.put("city", order.getOrderDetails().getCity());
-        map.put("address", order.getOrderDetails().getAddress());
-
-        // Llena el reporte con datos y crea un objeto JasperPrint
-        JasperPrint report = JasperFillManager.fillReport(compileReport, map, collection);
-
-        // Exporta el PDF y le asigna el nombre
-        JasperExportManager.exportReportToPdfFile(report,
-                customer.getEmail() + "-" + LocalDate.now() + "-" + Math.round(Math.random() * 1000) + ".pdf");
     }
 
     // --------------------------------------------------------
