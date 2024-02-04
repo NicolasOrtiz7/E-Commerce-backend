@@ -23,7 +23,7 @@ public class OrderController {
 
 
     @GetMapping
-    public ResponseEntity<Page<OrderResponseDto>> findAll(@PageableDefault(size = 15) Pageable pageable){
+    public ResponseEntity<Page<OrderResponseDto>> findAll(@PageableDefault(size = 10) Pageable pageable){
         return ResponseEntity.ok()
                 .body(orderService.findAll(pageable));
     }
