@@ -2,9 +2,11 @@ package com.nicolasortiz.ecommerce.service.impl;
 
 import com.nicolasortiz.ecommerce.exception.MyNotFoundException;
 import com.nicolasortiz.ecommerce.model.dto.product.ProductDto;
+import com.nicolasortiz.ecommerce.model.entity.OrderItems;
 import com.nicolasortiz.ecommerce.model.entity.Product;
 import com.nicolasortiz.ecommerce.model.entity.ProductStock;
 import com.nicolasortiz.ecommerce.model.mapper.ProductMapper;
+import com.nicolasortiz.ecommerce.repository.IOrderItemsRepository;
 import com.nicolasortiz.ecommerce.repository.IProductRepository;
 import com.nicolasortiz.ecommerce.service.IProductService;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +22,16 @@ import java.util.List;
 public class ProductServiceImpl implements IProductService {
 
     private final IProductRepository productRepository;
+    private final IOrderItemsRepository itemsRepository;
 
     @Override
     public Page<ProductDto> findAll(Pageable pageable) {
         return productRepository.findAll(pageable).map(ProductMapper.INSTANCE::toDto);
+    }
+
+    @Override
+    public Page<ProductDto> findAllActives(Pageable pageable) {
+        return productRepository.findAllByActiveIsTrue(pageable).map(ProductMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -34,17 +42,17 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Page<ProductDto> findByCategoryName(Pageable pageable, String name) {
-        return productRepository.findByCategoryName(pageable, name).map(ProductMapper.INSTANCE::toDto);
+        return productRepository.findByCategoryNameAndActiveIsTrue(pageable, name).map(ProductMapper.INSTANCE::toDto);
     }
 
     @Override
     public Page<ProductDto> findByNameContaining(Pageable pageable, String keyword) {
-        return productRepository.findByNameContaining(pageable, keyword).map(ProductMapper.INSTANCE::toDto);
+        return productRepository.findByNameContainingAndActiveIsTrue(pageable, keyword).map(ProductMapper.INSTANCE::toDto);
     }
 
     @Override
     public List<ProductDto> findByImportant() {
-        List<Product> productList = productRepository.findByImportant(true);
+        List<Product> productList = productRepository.findByImportantAndActiveIsTrue(true);
         return productList.stream()
                 .map(ProductMapper.INSTANCE::toDto).toList();
     }
@@ -69,9 +77,23 @@ public class ProductServiceImpl implements IProductService {
         productRepository.save(product);
     }
 
+    /* Si el producto no tiene ninguna compra, se elimina.
+    Si tiene al menos una compra, se deshabilita */
     @Override
-    public void deleteById(int id) {
-        findById(id);
-        productRepository.deleteById(id);
+    public void disableOrDeleteById(int id) {
+        // Verificar si tiene compras (verificar si existe en la tabla order_items)
+        List<OrderItems> orderItems = itemsRepository.findByProductProductId(id);
+
+        if (orderItems.isEmpty()) {
+            // Eliminarlo definitivamente
+            productRepository.deleteById(id);
+        } else {
+            // Deshabilitarlo
+            Product product = productRepository.findById(id)
+                    .orElseThrow(() -> new MyNotFoundException("No se encontró el producto"));
+            product.setActive(false);
+
+            productRepository.save(product);
+        }
     }
 }

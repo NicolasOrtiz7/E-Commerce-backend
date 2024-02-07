@@ -30,13 +30,19 @@ public class ProductController {
 
     // ------------ Products ------------
 
-    // Buscar todos con paginación
+    // Buscar todos con paginación. Uso de administradores
     @GetMapping
     public ResponseEntity<Page<ProductDto>> findAll(@PageableDefault(size = 15) Pageable pageable){
         return ResponseEntity.ok()
                 .body(productService.findAll(pageable));
     }
 
+    // Buscar todos con paginación. Uso para usuarios
+    @GetMapping("/actives")
+    public ResponseEntity<Page<ProductDto>> findAllActives(@PageableDefault(size = 15) Pageable pageable){
+        return ResponseEntity.ok()
+                .body(productService.findAllActives(pageable));
+    }
 
     // Buscar producto por su ID
     @GetMapping("/{productId}")
@@ -81,11 +87,11 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // Eliminar un producto por su ID
-    @DeleteMapping("/{productId}")
-    public ResponseEntity<Void> deleteProductById(@PathVariable int productId){
+//    Deshabilitar un producto por su ID.
+    @PutMapping("/disable/{productId}")
+    public ResponseEntity<Void> disableProductById(@PathVariable int productId){
 
-        productService.deleteById(productId);
+        productService.disableOrDeleteById(productId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

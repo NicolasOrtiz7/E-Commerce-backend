@@ -12,6 +12,8 @@ public interface IProductService {
 
     Page<ProductDto> findAll(Pageable pageable);
 
+    Page<ProductDto> findAllActives(Pageable pageable);
+
     ProductDto findById(int id);
 
     Page<ProductDto> findByCategoryName(Pageable pageable, String name);
@@ -24,6 +26,6 @@ public interface IProductService {
 
     void update(int id, Product product);
 
-    void deleteById(int id);
+    void disableOrDeleteById(int id);
 
 }

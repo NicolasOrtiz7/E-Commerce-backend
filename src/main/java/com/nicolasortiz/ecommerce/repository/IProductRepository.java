@@ -12,10 +12,12 @@ import java.util.List;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Integer> {
 
-    Page<Product> findByCategoryName(Pageable pageable, String name);
+    Page<Product> findByCategoryNameAndActiveIsTrue(Pageable pageable, String name);
 
-    List<Product> findByImportant(boolean isImportant);
+    List<Product> findByImportantAndActiveIsTrue(boolean isImportant);
 
-    Page<Product> findByNameContaining(Pageable pageable, String keyword);
+    Page<Product> findByNameContainingAndActiveIsTrue(Pageable pageable, String keyword);
+
+    Page<Product> findAllByActiveIsTrue(Pageable pageable);
 
 }
